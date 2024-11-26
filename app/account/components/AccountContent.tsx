@@ -19,23 +19,6 @@ const AccountContent = () => {
         }
     }, [isLoading, user, router]);
 
-    const redirectToCustomerPortal = async () => {
-        setLoading(true);
-        try {
-            const { url, error } = await postData({
-                url: 'api/create-portal-link'
-            });
-            if (url) {
-                window.location.assign(url);
-            } else if (error) {
-                throw new Error(error);
-            }
-        } catch (error) {
-            toast.error((error as Error).message);
-        }
-        setLoading(false);
-    };
-
     // Trigger the AuthModal when "Reset Password" link is clicked
     const handleResetPasswordClick = () => {
         authModal.onOpen(); // Open the AuthModal
