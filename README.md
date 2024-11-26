@@ -90,7 +90,7 @@ Soundify is open-source software licensed under the [MIT License](LICENSE).
 
 ## 📬 Contact
 
-For any inquiries, please reach out to [your-email@example.com](mailto:dassrinjoy2003@gmail.com).
+For any inquiries, please reach out to [dassrinjoy2003@gmail@gmail.com](mailto:dassrinjoy2003@gmail.com).
 
 ---
 
