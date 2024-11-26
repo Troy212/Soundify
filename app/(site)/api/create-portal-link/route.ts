@@ -37,9 +37,13 @@ export async function POST() {
 
         return NextResponse.json({ url });
 
-    } catch (error: any) {
+    } catch (error: unknown) {
         // Log and return a response in case of an error
-        console.error("Error occurred:", error.message);
+        if (error instanceof Error) {
+            console.error("Error occurred:", error.message);
+        } else {
+            console.error("An unknown error occurred");
+        }
         return new NextResponse('Internal error', { status: 500 });
     }
 }
