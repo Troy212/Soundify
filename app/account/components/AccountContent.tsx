@@ -5,8 +5,6 @@ import { postData } from "@/libs/helpers";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
-import { AiOutlineLoading } from "react-icons/ai"; // For loading spinner icon
-import Link from "next/link"; // Link component for navigation
 import useAuthModal from "@/hooks/useAuthModal"; // Assuming you have this hook to manage modals
 
 const AccountContent = () => {
@@ -56,7 +54,12 @@ const AccountContent = () => {
                     </div>
                 )}
 
-              
+                {/* Display loading spinner if needed */}
+                {loading && (
+                    <div className="text-center mb-4">
+                        <p>Loading...</p>
+                    </div>
+                )}
 
                 {/* Reset Password Link - Opens the AuthModal */}
                 <div className="text-center w-full max-w-md mx-auto">
