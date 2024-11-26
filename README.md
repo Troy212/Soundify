@@ -38,7 +38,7 @@
 To get started with Soundify locally, clone the repository:
 
 ```bash
-git clone https://github.com/Troy212/soundify.gi
+git clone https://github.com/Troy212/soundify.git
 cd soundify
 ```
 
