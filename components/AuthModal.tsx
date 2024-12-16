@@ -38,7 +38,7 @@ const AuthModal = () => {
             <Auth
                 theme="dark"
                 magicLink
-                providers={isProvidersWorking ? ["", "discord", "github"] : []}
+                providers={isProvidersWorking ? [ "discord", "github"] : []}
                 supabaseClient={supabaseClient}
                 appearance={{
                     theme: ThemeSupa,
