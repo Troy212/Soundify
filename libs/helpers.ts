@@ -4,7 +4,7 @@ export const getURL = () => {
     let url = 
         process.env.NEXT_PUBLIC_SITE_URL ??
         process.env.NEXT_PUBLIC_VERCEL_URL ??
-        'https://localhost:3000/';
+        'https://soundify-by-troy.vercel.app/';
 
     // Fix: Use correct template literal syntax and logic
     url = url.includes('https') ? url : `https://${url}`;
