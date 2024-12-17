@@ -35,23 +35,25 @@ const AuthModal = () => {
             isOpen={isOpen}
             onChange={onChange}
         >
-            <Auth
-                theme="dark"
-                magicLink
-                providers={isProvidersWorking ? ["spotify", "discord", "github"] : []}
-                supabaseClient={supabaseClient}
-                appearance={{
-                    theme: ThemeSupa,
-                    variables: {
-                        default: {
-                            colors: {
-                                brand: "#404040",
-                                brandAccent: "#ff0000",
+            <div className="w-full flex justify-center">
+                <Auth
+                    theme="dark"
+                    magicLink
+                    providers={isProvidersWorking ? ["spotify", "discord", "github"] : []}
+                    supabaseClient={supabaseClient}
+                    appearance={{
+                        theme: ThemeSupa,
+                        variables: {
+                            default: {
+                                colors: {
+                                    brand: "#404040",
+                                    brandAccent: "#ff0000",
+                                },
                             },
                         },
-                    },
-                }}
-            />
+                    }}
+                />
+            </div>
         </Modal>
     );
 };
