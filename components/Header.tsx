@@ -5,8 +5,10 @@ import { twMerge } from "tailwind-merge";
 import { RxCaretLeft, RxCaretRight } from "react-icons/rx";
 import { HiHome } from "react-icons/hi";
 import { BiSearch } from "react-icons/bi";
+import { AiOutlineCloudUpload } from "react-icons/ai"; // Import Upload Icon
 import Button from "./Button";
 import useAuthModal from "@/hooks/useAuthModal";
+import useUploadModal from "@/hooks/useUploadModal";
 import { useSupabaseClient } from "@supabase/auth-helpers-react";
 import { useUser } from "@/hooks/useUser";
 import { FaUserAlt } from "react-icons/fa";
@@ -19,21 +21,27 @@ interface HeaderProps {
 
 const Header: React.FC<HeaderProps> = ({ children, className }) => {
   const authModal = useAuthModal();
+  const uploadModal = useUploadModal();
   const router = useRouter();
-
   const supabaseClient = useSupabaseClient();
   const { user } = useUser();
 
   const handleLogout = async () => {
     const { error } = await supabaseClient.auth.signOut();
-    // Reset songs playing
-    router.refresh();
+    router.refresh(); // Refresh the page to reflect the logged-out state
 
     if (error) {
       toast.error(error.message);
     } else {
       toast.success("Successfully Logged Out!");
     }
+  };
+
+  const handleUploadClick = () => {
+    if (!user) {
+      return authModal.onOpen(); // Prompt login if user is not logged in
+    }
+    uploadModal.onOpen(); // Open the upload modal
   };
 
   return (
@@ -49,6 +57,7 @@ const Header: React.FC<HeaderProps> = ({ children, className }) => {
       )}
     >
       <div className="w-full mb-4 flex items-center justify-between">
+        {/* Desktop Navigation */}
         <div className="hidden md:flex gap-x-2 items-center">
           <button
             onClick={() => router.back()}
@@ -63,20 +72,31 @@ const Header: React.FC<HeaderProps> = ({ children, className }) => {
             <RxCaretRight className="text-white" size={35} />
           </button>
         </div>
+
+        {/* Mobile Navigation */}
         <div className="flex md:hidden gap-x-2 items-center">
           <button
-            onClick={() => router.push("/")} // Navigate to home
+            onClick={() => router.push("/")}
             className="rounded-full p-2 bg-white flex items-center justify-center hover:opacity-75 transition"
           >
             <HiHome className="text-black" size={20} />
           </button>
           <button
-            onClick={() => router.push("/search")} // Navigate to search
+            onClick={() => router.push("/search")}
             className="rounded-full p-2 bg-white flex items-center justify-center hover:opacity-75 transition"
           >
             <BiSearch className="text-black" size={20} />
           </button>
+          {/* Upload Song Button */}
+          <button
+            onClick={handleUploadClick}
+            className="rounded-full p-2 bg-white flex items-center justify-center hover:opacity-75 transition"
+          >
+            <AiOutlineCloudUpload className="text-black" size={20} />
+          </button>
         </div>
+
+        {/* User Authentication */}
         <div className="flex justify-between items-center gap-x-4">
           {user ? (
             <div className="flex gap-x-4 items-center">
@@ -97,7 +117,7 @@ const Header: React.FC<HeaderProps> = ({ children, className }) => {
                   onClick={authModal.onOpen}
                   className="bg-transparent text-neutral-300 font-medium"
                 >
-                  SignUp
+                  Sign Up
                 </Button>
               </div>
               <div>
