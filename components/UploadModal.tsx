@@ -133,18 +133,6 @@ const UploadModal = () => {
                     {...register('author', { required: true })}
                     placeholder="Song Author"
                 />
-                <Input
-                    id="lyricist"
-                    disabled={isLoading}
-                    {...register('lyricist', { required: true })}
-                    placeholder="Song Lyricist"
-                />
-                <Input
-                    id="recorddate"
-                    disabled={isLoading}
-                    {...register('recorddate', { required: true })}
-                    placeholder="Recording Date"
-                />
 
                 <div>
                     <div className="pb-1">Click to upload song</div>
