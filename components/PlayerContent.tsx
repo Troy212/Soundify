@@ -16,11 +16,11 @@ interface PlayerContentProps {
 
 const PlayerContent: React.FC<PlayerContentProps> = ({ song, songUrl }) => {
     const player = usePlayer();
-    const audioRef = useRef<HTMLAudioElement>(null);
-    const [volume, setVolume] = useState(1);
-    const [isPlaying, setIsPlaying] = useState(false);
-    const [currentTime, setCurrentTime] = useState(0);
-    const [duration, setDuration] = useState(0);
+    const audioRef = useRef<HTMLAudioElement>(null); // Reference to the audio element
+    const [volume, setVolume] = useState(1); // Volume state
+    const [isPlaying, setIsPlaying] = useState(false); // Play/pause state
+    const [currentTime, setCurrentTime] = useState(0); // Current time of the audio
+    const [duration, setDuration] = useState(0); // Duration of the audio
 
     const onPlayNext = () => {
         if (player.ids.length === 0) return;
@@ -75,34 +75,37 @@ const PlayerContent: React.FC<PlayerContentProps> = ({ song, songUrl }) => {
         return `${minutes}:${seconds < 10 ? `0${seconds}` : seconds}`;
     };
 
+    // Handle song ending
     const handleSongEnd = () => {
-        onPlayNext();
+        onPlayNext(); // Play the next song when the current one ends
     };
 
+    // Ensure the volume is set to the previous value when the song changes
     useEffect(() => {
         if (audioRef.current) {
-            audioRef.current.volume = volume;
+            audioRef.current.volume = volume; // Ensure volume is applied to the new song
         }
-    }, [songUrl, volume]);
+    }, [songUrl, volume]); // When song changes or volume changes, apply the volume
 
+    // Initially set volume when audio element is first loaded
     useEffect(() => {
         if (audioRef.current) {
             audioRef.current.volume = volume;
         }
-    }, []);
+    }, []); // Only run on initial mount
 
     return (
         <div className="grid grid-cols-2 md:grid-cols-3 h-full">
             {/* Left Section */}
             <div className="flex w-full items-center gap-x-4 overflow-hidden">
-                <div className="flex justify-center w-full">
+                <div className="truncate">
                     <MediaItem data={song} />
                 </div>
                 <LikeButton songId={song.id} />
             </div>
 
             {/* Middle Section (Desktop and Mobile Controls) */}
-            <div className="flex flex-col items-center justify-center w-full py-4 gap-y-4">
+            <div className="flex flex-col items-center justify-center w-full gap-y-4">
                 {/* Controls (Play, Pause, Previous, Next) */}
                 <div className="flex items-center gap-x-4">
                     <AiFillStepBackward
@@ -120,7 +123,7 @@ const PlayerContent: React.FC<PlayerContentProps> = ({ song, songUrl }) => {
                     />
                 </div>
 
-                {/* Seek Bar */}
+                {/* Seek Bar (Red Color Progression) */}
                 <div className="flex items-center justify-center w-full gap-x-2">
                     <span className="text-white">{formatTime(currentTime)}</span>
 
@@ -132,9 +135,7 @@ const PlayerContent: React.FC<PlayerContentProps> = ({ song, songUrl }) => {
                         onChange={handleSeek}
                         className="w-3/4 md:w-1/2 appearance-none h-2 bg-gray-300 rounded-lg"
                         style={{
-                            background: `linear-gradient(to right, red ${
-                                (currentTime / duration) * 100
-                            }%, #ccc ${(currentTime / duration) * 100}%)`,
+                            background: `linear-gradient(to right, red ${(currentTime / duration) * 100}%, #ccc ${(currentTime / duration) * 100}%)`
                         }}
                     />
 
@@ -142,9 +143,12 @@ const PlayerContent: React.FC<PlayerContentProps> = ({ song, songUrl }) => {
                 </div>
             </div>
 
-            {/* Volume Control */}
+            {/* Volume Control (Retained Position) */}
             <div className="hidden md:flex w-full justify-end pr-2">
-                <div className="flex items-center gap-x-2 w-[120px]">
+                <div className="flex items-center gap-x-2 w-full max-w-[200px]">
+                    {/* Volume percentage displayed ahead of mute button */}
+                    <span className="text-white text-sm">{Math.round(volume * 100)}%</span>
+
                     <button
                         onClick={() => {
                             const newVolume = volume > 0 ? 0 : 1;
@@ -160,18 +164,20 @@ const PlayerContent: React.FC<PlayerContentProps> = ({ song, songUrl }) => {
                             <HiSpeakerWave size={25} />
                         )}
                     </button>
-                    <input
-                        type="range"
-                        min="0"
-                        max="1"
-                        step="0.01"
-                        value={volume}
-                        onChange={handleVolumeChange}
-                        className="w-20 appearance-none h-2 rounded-lg"
-                        style={{
-                            background: `linear-gradient(to right, red ${volume * 100}%, #ccc ${volume * 100}%)`,
-                        }}
-                    />
+                    <div className="flex items-center gap-x-2 w-[80px]">
+                        <input
+                            type="range"
+                            min="0"
+                            max="1"
+                            step="0.01"
+                            value={volume}
+                            onChange={handleVolumeChange}
+                            className="w-full appearance-none h-2 rounded-lg"
+                            style={{
+                                background: `linear-gradient(to right, red ${volume * 100}%, #ccc ${volume * 100}%)`
+                            }}
+                        />
+                    </div>
                 </div>
             </div>
 
@@ -184,7 +190,7 @@ const PlayerContent: React.FC<PlayerContentProps> = ({ song, songUrl }) => {
                 onLoadedMetadata={handleLoadedMetadata}
                 onPlay={() => setIsPlaying(true)}
                 onPause={() => setIsPlaying(false)}
-                onEnded={handleSongEnd}
+                onEnded={handleSongEnd} // Trigger next song when the current one ends
             />
         </div>
     );
