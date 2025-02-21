@@ -32,6 +32,11 @@ const Player = () => {
         return () => window.removeEventListener("resize", checkScreenSize);
     }, []);
 
+    // Log image URL safely
+    useEffect(() => {
+        console.log("Final Image URL:", imageUrl);
+    }, [imageUrl]);
+
     // Extract Dominant Color from Album Art
     useEffect(() => {
         if (!isFullScreen) return; // Only extract color in fullscreen mode
@@ -88,9 +93,7 @@ const Player = () => {
                 {/* Fullscreen Mode */}
                 {isFullScreen && (
                     <div className="flex flex-col items-center w-full h-full justify-start mt-10">
-                        {/* Debugging: Log the image URL */}
-                        {console.log("Final Image URL:", imageUrl)}
-
+                        
                         {/* Display the image */}
                         <img 
                             src={imageUrl} 
@@ -112,8 +115,10 @@ const Player = () => {
 
                 {/* Fullscreen Toggle Button */}
                 <button 
-                    className={`absolute ${isMobile ? "bottom-28 right-4 w-12 h-12 text-xl" : "bottom-11 right-[300px] w-10 h-10 text-base"} 
-                        text-white bg-gray-800 rounded-full flex items-center justify-center shadow-lg hover:bg-gray-700`}
+                    className={`text-white bg-gray-800 rounded-full flex items-center justify-center shadow-lg hover:bg-gray-700
+                        w-10 h-10 text-base transition-all duration-300
+                        ${isMobile ? "absolute bottom-28 right-4" : "fixed bottom-5 right-5"}
+                    `}
                     onClick={() => {
                         console.log("Toggling Fullscreen: ", !isFullScreen);
                         setIsFullScreen(!isFullScreen);
