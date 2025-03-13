@@ -1,17 +1,24 @@
 "use client";
 
 import { useUser } from "@/hooks/useUser";
-import { postData } from "@/libs/helpers";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
-import useAuthModal from "@/hooks/useAuthModal"; // Assuming you have this hook to manage modals
+import useAuthModal from "@/hooks/useAuthModal"; 
+
+// Account Settings Components
+import EqualizerSettings from "./EqualizerSettings";
+import CrossfadeSettings from "./CrossfadeSettings";
+import AudioQualitySettings from "./AudioQualitySettings";
+import DataSaverMode from "./DataSaverMode";
+import PlayerCacheSettings from "./PlayerCacheSettings";
+import ThemeSwitcher from "./ThemeSwitcher";
 
 const AccountContent = () => {
     const router = useRouter();
     const { isLoading, user } = useUser();
     const [loading, setLoading] = useState(false);
-    const authModal = useAuthModal(); // Hook to control the AuthModal
+    const authModal = useAuthModal();
 
     useEffect(() => {
         if (!isLoading && !user) {
@@ -19,9 +26,8 @@ const AccountContent = () => {
         }
     }, [isLoading, user, router]);
 
-    // Trigger the AuthModal when "Reset Password" link is clicked
     const handleResetPasswordClick = () => {
-        authModal.onOpen(); // Open the AuthModal
+        authModal.onOpen();
     };
 
     return (
@@ -29,7 +35,6 @@ const AccountContent = () => {
             <div className="flex flex-col items-center">
                 <h1 className="text-2xl font-semibold mb-4">Account Details</h1>
 
-                {/* Displaying user information */}
                 {user && (
                     <div className="mb-6 text-center">
                         <p className="text-xl">{user?.email || "No email"}</p>
@@ -37,14 +42,12 @@ const AccountContent = () => {
                     </div>
                 )}
 
-                {/* Display loading spinner if needed */}
                 {loading && (
                     <div className="text-center mb-4">
                         <p>Loading...</p>
                     </div>
                 )}
 
-                {/* Reset Password Link - Opens the AuthModal */}
                 <div className="text-center w-full max-w-md mx-auto">
                     <button
                         onClick={handleResetPasswordClick}
@@ -52,6 +55,16 @@ const AccountContent = () => {
                     >
                         Forgot Password? Reset here.
                     </button>
+                </div>
+
+                {/* Account Components */}
+                <div className="mt-6 w-full space-y-6">
+                    <EqualizerSettings />
+                    <CrossfadeSettings />
+                    
+                    <DataSaverMode />
+                    <PlayerCacheSettings />
+                    <ThemeSwitcher />
                 </div>
             </div>
         </div>
