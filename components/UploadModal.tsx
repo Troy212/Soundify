@@ -113,7 +113,7 @@ const UploadModal = () => {
     return (
         <Modal
             title="Upload Your Song"
-            description="Mp3 File Only"
+            description="Mp3 & Wav Files Only"
             isOpen={uploadModal.isOpen}
             onChange={onChange}
         >
@@ -140,7 +140,7 @@ const UploadModal = () => {
                         id="song"
                         type="file"
                         disabled={isLoading}
-                        accept=".mp3"
+                        accept=".mp3,.wav"
                         {...register('song', { required: true })}
                     />
                 </div>
