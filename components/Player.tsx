@@ -13,6 +13,7 @@ const Player = () => {
     const [isFullScreen, setIsFullScreen] = useState(false);
     const [isMobile, setIsMobile] = useState(false);
     const [dominantColor, setDominantColor] = useState("rgba(0,0,0,0.7)");
+    const [showLyrics, setShowLyrics] = useState(false);
 
     // Supabase base URL for images
     const supabaseBaseUrl = "https://kaqfkpuetpczhutqdbab.supabase.co/storage/v1/object/public/images/";
@@ -79,10 +80,9 @@ const Player = () => {
         <>
             {/* Main Player Container */}
             <div 
-                className={`fixed w-full transition-all duration-300 ${
-                    isFullScreen 
-                        ? "inset-0 flex flex-col items-center justify-start backdrop-blur-3xl h-full pt-20 bg-black/80"
-                        : "bottom-0 bg-black h-[100px] px-4 py-2"
+                className={`fixed w-full transition-all duration-300 ${isFullScreen 
+                    ? "inset-0 flex flex-col items-center justify-center backdrop-blur-3xl h-full bg-black/80"
+                    : "bottom-0 bg-black h-[100px] px-4 py-2"
                 }`}
                 style={{
                     background: isFullScreen
@@ -92,20 +92,38 @@ const Player = () => {
             >
                 {/* Fullscreen Mode */}
                 {isFullScreen && (
-                    <div className="flex flex-col items-center w-full h-full justify-start mt-10">
-                        
-                        {/* Display the image */}
-                        <img 
-                            src={imageUrl} 
-                            alt={song.title} 
-                            className="w-[250px] h-[250px] md:w-[450px] md:h-[450px] rounded-lg shadow-lg object-cover"
-                            onError={(e) => console.log("Image Load Error:", e)}
-                        />
+                    <div className="flex flex-col items-center justify-center w-full h-full mt-10">
+                        {/* Conditionally Hide Image When Lyrics Are Shown */}
+                        {!showLyrics && (
+                            <img 
+                                src={imageUrl} 
+                                alt={song.title} 
+                                className="w-[250px] h-[250px] md:w-[450px] md:h-[450px] rounded-lg shadow-lg object-cover"
+                                onError={(e) => console.log("Image Load Error:", e)}
+                            />
+                        )}
 
                         {/* Song Title & Artist */}
                         <div className="text-center text-white mt-4">
                             <h2 className="text-2xl md:text-3xl font-semibold">{song.title}</h2>
                             <p className="text-md md:text-lg text-gray-300">{song.author}</p>
+
+                            {/* Show Lyrics Button */}
+                            <button
+                                className="mt-4 px-4 py-2 bg-white text-black rounded-full text-sm hover:bg-gray-200 transition"
+                                onClick={() => setShowLyrics((prev) => !prev)}
+                            >
+                                {showLyrics ? "Hide Lyrics" : "Show Lyrics"}
+                            </button>
+
+                            {/* Lyrics Display */}
+                            {showLyrics && song?.lyrics && (
+                                <div className="mt-4 max-w-xl text-center text-white whitespace-pre-wrap px-4">
+                                    <div className="h-[200px] overflow-y-auto px-2 text-sm md:text-lg lg:text-xl">
+                                        {song.lyrics}
+                                    </div>
+                                </div>
+                            )}
                         </div>
                     </div>
                 )}

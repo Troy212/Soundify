@@ -29,6 +29,7 @@ const UploadModal = () => {
             title: '',
             song: null,
             image: null,
+            lyrics: '',
         }
     });
 
@@ -46,7 +47,7 @@ const UploadModal = () => {
             const imageFile = values.image?.[0];
             const songFile = values.song?.[0];
 
-            if (!imageFile || !songFile || !user ) {
+            if (!imageFile || !songFile || !user) {
                 toast.error('Missing fields');
                 return;
             }
@@ -81,7 +82,7 @@ const UploadModal = () => {
                 return toast.error('Failed to upload cover art');
             }
 
-            // Insert data into songs table
+            // Insert data into songs table including lyrics
             const { error: supabaseError } = await supabaseClient
                 .from('songs')
                 .insert({
@@ -90,6 +91,7 @@ const UploadModal = () => {
                     author: values.author,
                     image_path: imageData.path,
                     song_path: songData.path,
+                    lyrics: values.lyrics, // 👈 lyrics included here
                 });
 
             if (supabaseError) {
@@ -113,7 +115,7 @@ const UploadModal = () => {
     return (
         <Modal
             title="Upload Your Song"
-            description="Mp3 File Only"
+            description="MP3 File Only"
             isOpen={uploadModal.isOpen}
             onChange={onChange}
         >
@@ -144,6 +146,18 @@ const UploadModal = () => {
                         {...register('song', { required: true })}
                     />
                 </div>
+
+                <div>
+                    <div className="pb-1">Lyrics</div>
+                    <textarea
+                        id="lyrics"
+                        disabled={isLoading}
+                        placeholder="Enter lyrics here..."
+                        className="w-full rounded-md border border-neutral-300 p-2"
+                        {...register('lyrics', { required: true })}
+                    />
+                </div>
+
                 <div>
                     <div className="pb-1">Click to upload cover art</div>
                     <Input
@@ -154,6 +168,7 @@ const UploadModal = () => {
                         {...register('image', { required: true })}
                     />
                 </div>
+
                 <Button disabled={isLoading} type="submit">
                     Upload
                 </Button>
