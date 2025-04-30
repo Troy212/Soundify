@@ -33,7 +33,7 @@ const Player = () => {
         return () => window.removeEventListener("resize", checkScreenSize);
     }, []);
 
-    // Log image URL safely
+    // Log image URL safelyA
     useEffect(() => {
         console.log("Final Image URL:", imageUrl);
     }, [imageUrl]);

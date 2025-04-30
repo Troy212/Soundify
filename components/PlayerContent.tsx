@@ -156,7 +156,7 @@ const PlayerContent: React.FC<PlayerContentProps> = ({ song, songUrl }) => {
             {/* Middle Section (Desktop and Mobile Controls) */}
             <div className="flex flex-col items-center justify-center w-full gap-y-4">
                 {/* Controls (Play, Pause, Previous, Next, Loop, Shuffle) */}
-                <div className="flex items-center gap-x-4">
+                <div className="flex items-center gap-x-2">
                     <AiFillStepBackward
                         onClick={onPlayPrevious}
                         size={30}
